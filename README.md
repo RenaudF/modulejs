@@ -8,20 +8,20 @@ Simple JS module loader that lets you inject dependencies where you might need t
 
 # Everything is a module
 
-    App.module('fooFactory', function(){
+    App.register('fooFactory', function(){
         return function(){
             this.foo = 'bar';
         }
     });
 
-    App.module('fooService', function(){
+    App.register('fooService', function(){
         return {
             foo: 'bar'
         };
     });
 
-    App.module('fooController', function(){
-        var fooFactory = App.get('fooFactory');
-        var fooService = App.get('fooService');
+    App.register('fooController', function(){
+        var fooFactory = App.moduleMap['fooFactory'];
+        var fooService = App.moduleMap['fooService'];
         // ...
     })
