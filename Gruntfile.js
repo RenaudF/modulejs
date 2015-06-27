@@ -20,6 +20,10 @@ module.exports = function (grunt) {
 				src: ['src/**/*.js'],
 				dest: 'module.js'
 			},
+			test: {
+				src: ['test/**/*unit.js'],
+				dest: 'test/tests.js'
+			},
 		},
 		uglify: {
 			options: {
@@ -28,6 +32,10 @@ module.exports = function (grunt) {
 			dist: {
 				src: '<%= concat.dist.dest %>',
 				dest: 'module.min.js'
+			},
+			test: {
+				src: 'test/tests.js',
+				dest: 'test/tests.min.js'
 			}
 		},
 		karma: {
@@ -36,6 +44,15 @@ module.exports = function (grunt) {
 			},
 			unit: {
 				singleRun: true
+			},
+			uglytest: {
+				singleRun: true,
+				options: {
+					files: [
+						'module.min.js',
+						'test/tests.min.js'
+					]
+				}
 			},
 			manual: {
 				logLevel: 'DEBUG'
@@ -105,7 +122,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 
 	// Default task.
-	grunt.registerTask('default', ['karma:unit', 'concat', 'uglify']);
+	grunt.registerTask('default', ['karma:unit', 'concat', 'uglify', 'karma:uglytest']);
 	grunt.registerTask('preview', ['open:preview', 'connect:development']);
 	grunt.registerTask('preview-live', ['default', 'open:preview', 'connect:production']);
 	grunt.registerTask('test', ['karma:manual']);
